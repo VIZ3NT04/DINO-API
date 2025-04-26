@@ -2,19 +2,20 @@ FROM eclipse-temurin:17-jdk-jammy
 
 WORKDIR /app
 
-# 1. Instala Maven (solo necesario si no usas el wrapper)
-RUN apt-get update && apt-get install -y maven
+# 1. Instala Maven y verifica encoding del sistema
+RUN apt-get update && \
+    apt-get install -y maven && \
+    echo "LANG=C.UTF-8" > /etc/default/locale
 
-# 2. Copia los archivos del proyecto
+# 2. Copia solo lo necesario
 COPY pom.xml .
 COPY src ./src
 
-# 3. Construye el proyecto (usa el comando directo de Maven)
-RUN mvn clean package -DskipTests
+# 3. Fuerza encoding UTF-8 durante el build
+RUN mvn clean package -DskipTests -Dfile.encoding=UTF-8
 
-# 4. Copia el JAR generado
+# 4. Copia el JAR
 COPY target/*.jar app.jar
 
-# 5. Puerto y ejecución
 EXPOSE 8080
-CMD ["java", "-jar", "app.jar"]
+CMD ["java", "-Dfile.encoding=UTF-8", "-jar", "app.jar"]
