@@ -9,4 +9,5 @@ import java.util.List;
 public interface IDinosaurioService {
     List<Dinosaurio> listaDinosaurio();
     Dinosaurio listaDinosaurioPorId(Integer id);
+    List<Dinosaurio> listaDinosaurioPorName(String name);
 }

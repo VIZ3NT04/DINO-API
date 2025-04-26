@@ -35,5 +35,13 @@ public class DinosaurioController {
         return new ResponseEntity<>(dinosaurio, HttpStatus.OK);
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<Dinosaurio>> findByName(@RequestParam("name") String name) {
+        List<Dinosaurio> dinosaurios = service.listaDinosaurioPorName(name);
+        if (dinosaurios == null || dinosaurios.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(dinosaurios, HttpStatus.OK);
+    }
 
 }

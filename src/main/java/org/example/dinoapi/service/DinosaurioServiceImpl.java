@@ -23,4 +23,9 @@ public class DinosaurioServiceImpl implements IDinosaurioService {
     public Dinosaurio listaDinosaurioPorId(Integer id) {
         return repo.getReferenceById(id);
     }
+
+    @Override
+    public List<Dinosaurio> listaDinosaurioPorName(String name) {
+        return repo.listarDinosaurioPorNombre(name);
+    }
 }
