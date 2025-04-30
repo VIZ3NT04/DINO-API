@@ -20,6 +20,13 @@ public class Usuario {
     @Column(unique = true, nullable = false)
     private String email;
 
+    @Column
+    private boolean verificado;
+
+    @Column
+    private String codigoVerificacion;
+
+
     public Usuario() {
 
     }
@@ -56,10 +63,28 @@ public class Usuario {
         this.id = id;
     }
 
-    public Usuario(Integer id, String name, String password, String email) {
+    public boolean isVerificado() {
+        return verificado;
+    }
+
+    public void setVerificado(boolean verificado) {
+        this.verificado = verificado;
+    }
+
+    public String getCodigoVerificacion() {
+        return codigoVerificacion;
+    }
+
+    public void setCodigoVerificacion(String codigoVerificacion) {
+        this.codigoVerificacion = codigoVerificacion;
+    }
+
+    public Usuario(Integer id, String name, String password, String email, boolean verificado, String codigoVerificacion) {
         this.id = id;
         this.name = name;
         this.password = password;
         this.email = email;
+        this.verificado = verificado;
+        this.codigoVerificacion = codigoVerificacion;
     }
 }

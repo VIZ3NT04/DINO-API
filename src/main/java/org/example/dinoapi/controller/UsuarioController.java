@@ -41,12 +41,35 @@ public class UsuarioController {
         System.out.println("Estan probant a loggearse");
         Usuario user = service.loginUsuario(email,password);
         System.out.println(user.getName() + " " + user.getPassword() + " " + user.getEmail());
+
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        if (!user.isVerificado()) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
+        return new ResponseEntity<>(user, HttpStatus.OK);
+
+    }
+
+    @PostMapping("/verificar")
+    public ResponseEntity<String> verificarCodigo(@RequestParam String email, @RequestParam String codigo) {
+        Usuario user = service.getUsuarioByEmail(email);
+        if (user == null) {
+            return new ResponseEntity<>("{\"error\": \"Usuario no encontrado\"}", HttpStatus.NOT_FOUND);
+        }
+
+        if (user.getCodigoVerificacion() != null && user.getCodigoVerificacion().equals(codigo)) {
+            user.setVerificado(true);
+            user.setCodigoVerificacion(null); // elimina el código
+            service.modificarUser(user);
+            return new ResponseEntity<>("{\"message\": \"Verificado correctamente\"}", HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(user, HttpStatus.OK);
+            return new ResponseEntity<>("{\"error\": \"Código incorrecto\"}", HttpStatus.BAD_REQUEST);
         }
     }
+
 
 
     @PostMapping

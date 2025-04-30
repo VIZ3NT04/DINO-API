@@ -1,5 +1,6 @@
 package org.example.dinoapi.service;
 
+import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import org.example.dinoapi.model.Usuario;
 import org.example.dinoapi.model.dto.UsuarioRequestDTO;
@@ -10,6 +11,7 @@ import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class UsuarioServiceImpl implements IUsuarioService{
@@ -19,10 +21,20 @@ public class UsuarioServiceImpl implements IUsuarioService{
     @Autowired
     private ModelMapper mapper;
 
+    @Autowired
+    private EmailService emailService;
+
     @Override
     public Usuario insertUser(UsuarioRequestDTO usuario) {
         try {
+
             Usuario u = mapper.map(usuario, Usuario.class);
+            String codigo = String.format("%06d", new Random().nextInt(999999));
+            u.setCodigoVerificacion(codigo);
+            u.setVerificado(false);
+
+
+            emailService.enviarCodigoVerificacion(u.getEmail(), u.getCodigoVerificacion());
             return repo.save(u);
         } catch (ObjectOptimisticLockingFailureException e) {
             throw new RuntimeException("Error de concurrencia al insertar el usuario", e);
