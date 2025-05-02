@@ -8,6 +8,7 @@ import org.example.dinoapi.repository.IUsuarioRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +25,10 @@ public class UsuarioServiceImpl implements IUsuarioService{
     @Autowired
     private EmailService emailService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+
     @Override
     public Usuario insertUser(UsuarioRequestDTO usuario) {
         try {
@@ -33,6 +38,9 @@ public class UsuarioServiceImpl implements IUsuarioService{
             u.setCodigoVerificacion(codigo);
             u.setVerificado(false);
 
+            String rawPassword = usuario.getPassword();
+            String encryptedPassword = passwordEncoder.encode(rawPassword);
+            u.setPassword(encryptedPassword);
 
             emailService.enviarCodigoVerificacion(u.getEmail(), u.getCodigoVerificacion());
             return repo.save(u);
@@ -53,14 +61,16 @@ public class UsuarioServiceImpl implements IUsuarioService{
 
     @Override
     public Usuario loginUsuario(String email, String password) {
-        Usuario user = repo.loginUsuario(email, password);
-        if (user != null) {
-            System.out.println("Usuario encontrado: " + user.getName());
+        Usuario user = repo.getUsuarioByEmail(email);
+        if (user != null && passwordEncoder.matches(password, user.getPassword())) {
+            System.out.println("Usuario autenticado: " + user.getName());
+            return user;
         } else {
-            System.out.println("Usuario no encontrado o credenciales incorrectas.");
+            System.out.println("Credenciales incorrectas.");
+            return null;
         }
-        return user;
     }
+
 
     @Override
     public Usuario listarUsuarioPorId(Integer id) {
