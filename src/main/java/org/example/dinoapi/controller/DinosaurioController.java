@@ -1,17 +1,10 @@
 package org.example.dinoapi.controller;
 
 import org.example.dinoapi.model.Dinosaurio;
-import org.example.dinoapi.model.Usuario;
-import org.example.dinoapi.model.dto.DinosaurioResponseDTO;
 import org.example.dinoapi.service.IDinosaurioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-
 import java.util.Base64;
 import java.util.List;
 
@@ -53,17 +46,35 @@ public class DinosaurioController {
     public ResponseEntity<Dinosaurio> generarDinoCompletoConImagen() {
         Dinosaurio dino = service.generarDinosaurioAleatorio();
 
-        String prompt = "a fantasy " + dino.getTipo() + " dinosaur named " + dino.getNombre() +
-                ", prehistoric jungle, " + dino.getPeriodo().getNombre() +
-                " period, cartoon style, full body, vivid colors, dynamic pose";
+        String tipo = dino.getTipo();
+        String caracteristicas = "";
+
+        switch (tipo.toLowerCase()) {
+            case "carnívoro":
+                caracteristicas = "sharp teeth, claws, aggressive posture";
+                break;
+            case "herbívoro":
+                caracteristicas = "like a Triceratops , Stegosaurus or Diplodocus";
+                break;
+            case "omnivoro":
+                caracteristicas = "mixed features, curious expression, moderate size, flexible limbs";
+                break;
+            default:
+                caracteristicas = "generic dinosaur features";
+        }
+
+        String prompt = "a fantasy " + tipo + " dinosaur named " + dino.getNombre() +
+                ", " + caracteristicas + ", prehistoric jungle, " + dino.getPeriodo().getNombre() +
+                " period, cartoon style, full body, vivid colors, dynamic pose, max five limbs";
+
 
         byte[] imagenBytes = service.generarImagenComoBytes(prompt);
 
         if (imagenBytes == null) {
             throw new RuntimeException("La generación de imagen falló: no se recibió ningún dato.");
         }
-        String base64Imagen = Base64.getEncoder().encodeToString(imagenBytes);
 
+        String base64Imagen = Base64.getEncoder().encodeToString(imagenBytes);
 
         dino.setFoto(base64Imagen); // Suponiendo que el modelo tiene un campo `foto`
 

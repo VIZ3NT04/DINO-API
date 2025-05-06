@@ -71,12 +71,6 @@ public class UsuarioServiceImpl implements IUsuarioService{
         }
     }
 
-
-    @Override
-    public Usuario listarUsuarioPorId(Integer id) {
-        return repo.getReferenceById(id);
-    }
-
     @Override
     public List<Usuario> listaUsuarios() {
         return repo.findAll();

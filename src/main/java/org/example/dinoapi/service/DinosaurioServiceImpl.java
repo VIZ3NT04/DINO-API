@@ -27,10 +27,10 @@ public class DinosaurioServiceImpl implements IDinosaurioService {
 
     private static final String[] TIPOS = {"carnívoro", "herbívoro", "omnivoro"};
     private static final String[] PREFIJOS = {
-            "Mega", "Cryo", "Bronto", "Stego", "Veloci", "Giga", "Ptero", "Allo", "Spino", "Raptor"
+            "Mega", "Cryo", "Bronto", "Stego", "Veloci", "Giga", "Gita" , "Ptero", "Allo", "Spino", "Raptor", "Odoo", "Mosa" , "Enova" , "Plesio"
     };
     private static final String[] SUFIJOS = {
-            "saurio", "ceratops", "raptor", "donte", "saurus", "tyrannus", "gnathus", "draco", "ornis", "rex"
+            "saurio", "ceratops", "raptor", "donte", "saurus", "tyrannus", "no", "gnathus", "draco", "ornis", "rex" , "pecia", "punisher"
     };
 
     private String generarNombreInventado() {
@@ -61,21 +61,24 @@ public class DinosaurioServiceImpl implements IDinosaurioService {
             RestTemplate restTemplate = new RestTemplate();
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-            headers.set("Authorization", "Bearer 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"); // Usa tu token de Hugging Face
+            headers.setAccept(List.of(MediaType.IMAGE_PNG)); // Esperar una imagen, no JSON
+            headers.set("Authorization", "Bearer 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");
 
-            // Hugging Face espera un JSON con "inputs"
             String body = "{\"inputs\": \"" + prompt + "\"}";
             HttpEntity<String> entity = new HttpEntity<>(body, headers);
 
             String apiUrl = "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0";
             ResponseEntity<byte[]> response = restTemplate.exchange(apiUrl, HttpMethod.POST, entity, byte[].class);
 
-            return response.getBody(); // ya es una imagen binaria
+            // Devuelve la imagen como bytes directamente
+            return response.getBody();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
+
+
 
     public Dinosaurio generarDinosaurioAleatorio() {
         Random rand = new Random();

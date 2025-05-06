@@ -9,7 +9,6 @@ public interface IUsuarioService {
     Usuario modificarUser(Usuario usuario);
     void deleteUser(Integer id);
     Usuario loginUsuario(String email,  String password);
-    Usuario listarUsuarioPorId(Integer id);
     List<Usuario> listaUsuarios();
     Usuario getUsuarioByEmail(String email);
     Usuario getUsuarioById(Integer id);
