@@ -8,4 +8,8 @@ public interface IDinosaurioFavoritoService {
     DinosaurioFavorito insertarDinosaurioFavorito(DinosaurioFavorito dinoFavorito);
     List<DinosaurioFavorito> listarDinosaurioFavorito();
     DinosaurioFavorito eliminarDinosaurioFavorito(Integer id);
+    int contarPorEmail(String email);
+    List<DinosaurioFavorito> buscarPorEmail(String email);
+    DinosaurioFavorito actualizarDinosaurioFavorito(DinosaurioFavorito dinoFavorito);
+
 }

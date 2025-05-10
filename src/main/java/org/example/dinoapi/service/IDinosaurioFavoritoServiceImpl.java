@@ -16,22 +16,36 @@ public class IDinosaurioFavoritoServiceImpl implements IDinosaurioFavoritoServic
     private IDinosaurioFavoritoRepository repository;
 
     @Override
+    public int contarPorEmail(String email) {
+        return repository.countDinosaurioFavoritoByEmailUsuario(email);
+    }
+
+    @Override
+    public List<DinosaurioFavorito> buscarPorEmail(String email) {
+        return repository.getDinosaurioFavoritosByEmailUsuario(email);
+    }
+
+    @Override
+    public DinosaurioFavorito actualizarDinosaurioFavorito(DinosaurioFavorito dinoFavorito) {
+        return repository.save(dinoFavorito); // save hace UPDATE si el ID existe
+    }
+
+    @Override
     public DinosaurioFavorito insertarDinosaurioFavorito(DinosaurioFavorito dinoFavorito) {
         List<DinosaurioFavorito> listaDinosaurioFavorito = repository.findAll();
         int contador = 0;
 
         for (DinosaurioFavorito dinosaurioFavorito : listaDinosaurioFavorito) {
-            if (dinosaurioFavorito.getNombre().equals(dinoFavorito.getNombre())) {
+            if (dinosaurioFavorito.getEmailUsuario().equals(dinoFavorito.getEmailUsuario())) {
                 contador++;
             }
         }
 
         if (contador >= 5) {
             return null;
-        } else {
-            return repository.save(dinoFavorito);
         }
 
+        return repository.save(dinoFavorito);
     }
 
 

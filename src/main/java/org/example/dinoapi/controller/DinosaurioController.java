@@ -2,6 +2,7 @@ package org.example.dinoapi.controller;
 
 import org.example.dinoapi.model.Dinosaurio;
 import org.example.dinoapi.service.IDinosaurioService;
+import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -80,4 +81,17 @@ public class DinosaurioController {
 
         return new ResponseEntity<>(dino, HttpStatus.OK);
     }
+
+    @GetMapping("/paginar")
+    public ResponseEntity<List<Dinosaurio>> listarDinosauriosPaginados(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size) {
+
+        Page<Dinosaurio> pagina = service.listarDinosauriosPaginados(page, size);
+        if (pagina.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(pagina.getContent(), HttpStatus.OK);
+    }
+
 }

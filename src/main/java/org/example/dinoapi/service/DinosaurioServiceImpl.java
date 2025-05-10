@@ -9,6 +9,9 @@ import org.example.dinoapi.repository.IDinosaurioRepository;
 import org.example.dinoapi.repository.IPeriodoRepository;
 import org.example.dinoapi.repository.IUsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -25,13 +28,22 @@ public class DinosaurioServiceImpl implements IDinosaurioService {
     @Autowired
     private IPeriodoRepository periodoRepo;
 
-    private static final String[] TIPOS = {"carnívoro", "herbívoro", "omnivoro"};
+    private static final String[] TIPOS = {"carnívoro", "herbívoro", "omnívoro"};
     private static final String[] PREFIJOS = {
             "Mega", "Cryo", "Bronto", "Stego", "Veloci", "Giga", "Gita" , "Ptero", "Allo", "Spino", "Raptor", "Odoo", "Mosa" , "Enova" , "Plesio"
+
+
     };
     private static final String[] SUFIJOS = {
-            "saurio", "ceratops", "raptor", "donte", "saurus", "tyrannus", "no", "gnathus", "draco", "ornis", "rex" , "pecia", "punisher"
+            "saurio", "ceratops", "raptor", "donte", "saurus", "tyrannus", "no", "gnathus", "draco", "ornis", "rex" , "pecia", "punisher" , "reaper"
     };
+
+    @Override
+    public Page<Dinosaurio> listarDinosauriosPaginados(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return repo.findAll(pageable);
+    }
+
 
     private String generarNombreInventado() {
         Random random = new Random();
@@ -62,7 +74,7 @@ public class DinosaurioServiceImpl implements IDinosaurioService {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             headers.setAccept(List.of(MediaType.IMAGE_PNG)); // Esperar una imagen, no JSON
-            headers.set("Authorization", "Bearer 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");
+            headers.set("Authorization", "Bearer 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");
 
             String body = "{\"inputs\": \"" + prompt + "\"}";
             HttpEntity<String> entity = new HttpEntity<>(body, headers);

@@ -17,17 +17,17 @@ public class DinosaurioFavorito {
 
     private String foto; // Aquí puedes guardar la ruta (ej. /uploads/dino1.png)
 
-
-    private String email_usuario;
+    private String emailUsuario;
 
     // Getters y setters
 
-    public String getEmail_usuario() {
-        return email_usuario;
+
+    public String getEmailUsuario() {
+        return emailUsuario;
     }
 
-    public void setEmail_usuario(String email_usuario) {
-        this.email_usuario = email_usuario;
+    public void setEmailUsuario(String emailUsuario) {
+        this.emailUsuario = emailUsuario;
     }
 
     public Integer getId() {

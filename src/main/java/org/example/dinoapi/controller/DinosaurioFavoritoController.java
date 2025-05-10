@@ -38,10 +38,23 @@ public class DinosaurioFavoritoController {
         return service.listarDinosaurioFavorito();
     }
 
+    @GetMapping("/{email}")
+    public List<DinosaurioFavorito> listarDinosauriosFavoritos(@PathVariable String email) {
+        return service.buscarPorEmail(email);
+    }
+
     @DeleteMapping("/{id}")
     public DinosaurioFavorito eliminarDinosaurioFavorito(@PathVariable Integer id) {
         return service.eliminarDinosaurioFavorito(id);
     }
+
+    @GetMapping("/espacio/{email}")
+    public ResponseEntity<?> obtenerEspacioDisponible(@PathVariable String email) {
+        int usados = service.contarPorEmail(email);
+        int disponibles = 5 - usados;
+        return ResponseEntity.ok(disponibles);
+    }
+
 
     @PostMapping(value = "/upload", consumes = {"multipart/form-data"})
     public ResponseEntity<?> subirDinosaurioConImagen(
@@ -56,7 +69,7 @@ public class DinosaurioFavoritoController {
         dino.setNombre(nombre);
         dino.setTipo(tipo);
         dino.setPeriodo(periodo);
-        dino.setEmail_usuario(emailUsuario);
+        dino.setEmailUsuario(emailUsuario);
         dino.setFoto(""); // temporal
 
         dino = service.insertarDinosaurioFavorito(dino); // Guarda y obtiene ID
@@ -71,17 +84,15 @@ public class DinosaurioFavoritoController {
         String fileName = dino.getId() + ".png";
 
         // 3. Guardar archivo en carpeta
-        String uploadDir = "uploads/";
+        String uploadDir = "C:/Users/Vicent/IdeaProjects/DINO-API/uploads/";
         Files.createDirectories(Paths.get(uploadDir));
         Path filePath = Paths.get(uploadDir, fileName);
         Files.write(filePath, foto.getBytes());
 
         // 4. Actualizar la ruta de la imagen
-        dino.setFoto("/" + filePath.toString().replace("\\", "/"));
-        dino = service.insertarDinosaurioFavorito(dino); // Actualizar con foto
+        dino.setFoto("/uploads/" + fileName);
+        dino = service.actualizarDinosaurioFavorito(dino);
 
         return ResponseEntity.ok(dino);
     }
-
-
 }
