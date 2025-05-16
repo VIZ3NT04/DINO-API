@@ -1,9 +1,11 @@
 package org.example.dinoapi.controller;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.example.dinoapi.model.Usuario;
 import org.example.dinoapi.model.dto.UsuarioRequestDTO;
+import org.example.dinoapi.service.IDinosaurioFavoritoService;
 import org.example.dinoapi.service.IUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,9 @@ import java.util.Optional;
 public class UsuarioController {
     @Autowired
     private IUsuarioService service;
+
+    @Autowired
+    private IDinosaurioFavoritoService dino_service;
 
     @GetMapping
     public ResponseEntity<List<Usuario>> findAll() {
@@ -45,6 +50,9 @@ public class UsuarioController {
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
+
+        System.out.println(user.getName() + " " + user.getPassword() + " " + user.getEmail());
+
         if (!user.isVerificado()) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
@@ -54,23 +62,21 @@ public class UsuarioController {
     }
 
     @PostMapping("/verificar")
-    public ResponseEntity<String> verificarCodigo(@RequestParam String email, @RequestParam String codigo) {
+    public ResponseEntity<Usuario> verificarCodigo(@RequestParam String email, @RequestParam String codigo) {
         Usuario user = service.getUsuarioByEmail(email);
         if (user == null) {
-            return new ResponseEntity<>("{\"error\": \"Usuario no encontrado\"}", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         if (user.getCodigoVerificacion() != null && user.getCodigoVerificacion().equals(codigo)) {
             user.setVerificado(true);
             user.setCodigoVerificacion(null); // elimina el código
             service.modificarUser(user);
-            return new ResponseEntity<>("{\"message\": \"Verificado correctamente\"}", HttpStatus.OK);
+            return new ResponseEntity<>(user, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("{\"error\": \"Código incorrecto\"}", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-
-
 
     @PostMapping
     public ResponseEntity<Usuario> registrar(@Valid @RequestBody UsuarioRequestDTO usuario) {
@@ -86,8 +92,9 @@ public class UsuarioController {
 
     }
 
-    @PutMapping
-    public ResponseEntity<Usuario> modificar(@Valid @RequestBody Usuario usuario) {
+    @PutMapping("/{email}")
+    public ResponseEntity<Usuario> modificar(@PathVariable("email") String email, @Valid @RequestBody UsuarioRequestDTO usuario) {
+        usuario.setEmail(email); // asegúrate de que el DTO tiene el email correcto
         Usuario user = service.modificarUser(usuario);
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -96,9 +103,13 @@ public class UsuarioController {
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(@PathVariable("id") Integer id){
-        service.deleteUser(id);
+
+
+    @Transactional
+    @DeleteMapping("/{email}")
+    public ResponseEntity<Void> eliminar(@PathVariable("email") String email){
+        dino_service.deleteDinosauriosFavorito(email);
+        service.deleteUser(email);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

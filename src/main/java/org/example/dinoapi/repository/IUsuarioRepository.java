@@ -10,5 +10,5 @@ import org.springframework.data.repository.query.Param;
 public interface IUsuarioRepository extends JpaRepository<Usuario, Integer> {
 
     Usuario getUsuarioByEmail(String email);
-
+    void deleteUsuarioByEmail(String email);
 }

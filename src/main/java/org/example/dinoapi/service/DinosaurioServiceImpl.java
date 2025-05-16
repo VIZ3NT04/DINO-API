@@ -30,12 +30,14 @@ public class DinosaurioServiceImpl implements IDinosaurioService {
 
     private static final String[] TIPOS = {"carnívoro", "herbívoro", "omnívoro"};
     private static final String[] PREFIJOS = {
-            "Mega", "Cryo", "Bronto", "Stego", "Veloci", "Giga", "Gita" , "Ptero", "Allo", "Spino", "Raptor", "Odoo", "Mosa" , "Enova" , "Plesio"
+            "Mega", "Cryo", "Bronto", "Stego", "Veloci", "Giga", "Gita" , "Ptero",
+            "Allo", "Spino", "Raptor", "Odoo", "Mosa" , "Enova" , "Plesio"
 
 
     };
     private static final String[] SUFIJOS = {
-            "saurio", "ceratops", "raptor", "donte", "saurus", "tyrannus", "no", "gnathus", "draco", "ornis", "rex" , "pecia", "punisher" , "reaper"
+            "saurio", "ceratops", "raptor", "donte", "saurus", "tyrannus", "no"
+            , "gnathus", "draco", "ornis", "rex" , "pecia" , "reaper"
     };
 
     @Override
@@ -73,8 +75,8 @@ public class DinosaurioServiceImpl implements IDinosaurioService {
             RestTemplate restTemplate = new RestTemplate();
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-            headers.setAccept(List.of(MediaType.IMAGE_PNG)); // Esperar una imagen, no JSON
-            headers.set("Authorization", "Bearer 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");
+            headers.setAccept(List.of(MediaType.IMAGE_PNG));
+            headers.set("Authorization", "Bearer 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");
 
             String body = "{\"inputs\": \"" + prompt + "\"}";
             HttpEntity<String> entity = new HttpEntity<>(body, headers);
@@ -82,7 +84,6 @@ public class DinosaurioServiceImpl implements IDinosaurioService {
             String apiUrl = "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0";
             ResponseEntity<byte[]> response = restTemplate.exchange(apiUrl, HttpMethod.POST, entity, byte[].class);
 
-            // Devuelve la imagen como bytes directamente
             return response.getBody();
         } catch (Exception e) {
             e.printStackTrace();

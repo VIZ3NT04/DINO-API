@@ -1,6 +1,7 @@
 package org.example.dinoapi.service;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.example.dinoapi.model.Usuario;
 import org.example.dinoapi.model.dto.UsuarioRequestDTO;
@@ -55,8 +56,26 @@ public class UsuarioServiceImpl implements IUsuarioService{
     }
 
     @Override
-    public void deleteUser(Integer id) {
-        repo.deleteById(id);
+    public Usuario modificarUser(UsuarioRequestDTO usuarioDto) {
+        Usuario existingUser = repo.getUsuarioByEmail(usuarioDto.getEmail());
+        if (existingUser == null) {
+            throw new EntityNotFoundException("Usuario no encontrado con el email: " + usuarioDto.getEmail());
+        }
+
+        existingUser.setName(usuarioDto.getName());
+
+        if (usuarioDto.getPassword() != null && !usuarioDto.getPassword().isBlank()) {
+            String encryptedPassword = passwordEncoder.encode(usuarioDto.getPassword());
+            existingUser.setPassword(encryptedPassword);
+        }
+
+        return repo.save(existingUser);
+    }
+
+
+    @Override
+    public void deleteUser(String email) {
+        repo.deleteUsuarioByEmail(email);
     }
 
     @Override

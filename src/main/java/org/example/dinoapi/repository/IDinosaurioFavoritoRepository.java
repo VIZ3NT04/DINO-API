@@ -12,4 +12,5 @@ public interface IDinosaurioFavoritoRepository extends JpaRepository<DinosaurioF
     int countDinosaurioFavoritoByEmailUsuario(String email);
 
     List<DinosaurioFavorito> getDinosaurioFavoritosByEmailUsuario(String emailUsuario);
+    void deleteDinosaurioFavoritoByEmailUsuario(String emailUsuario);
 }

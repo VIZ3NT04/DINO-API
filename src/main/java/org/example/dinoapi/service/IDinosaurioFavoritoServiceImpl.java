@@ -31,6 +31,11 @@ public class IDinosaurioFavoritoServiceImpl implements IDinosaurioFavoritoServic
     }
 
     @Override
+    public void deleteDinosauriosFavorito(String email) {
+        repository.deleteDinosaurioFavoritoByEmailUsuario(email);
+    }
+
+    @Override
     public DinosaurioFavorito insertarDinosaurioFavorito(DinosaurioFavorito dinoFavorito) {
         List<DinosaurioFavorito> listaDinosaurioFavorito = repository.findAll();
         int contador = 0;

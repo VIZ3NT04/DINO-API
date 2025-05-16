@@ -1,0 +1,32 @@
+package org.example.dinoapi.controller;
+
+import org.example.dinoapi.model.Pregunta;
+import org.example.dinoapi.repository.IPreguntaRepository;
+import org.example.dinoapi.service.IPreguntaService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/preguntas")
+public class PreguntaController {
+
+    @Autowired
+    private IPreguntaService service;
+
+    @Autowired
+    private IPreguntaRepository repository;
+
+    @GetMapping
+    public List<Pregunta> getTodas() {
+        return service.obtenerTodas();
+    }
+
+    @GetMapping("/nivel/{nivel}")
+    public List<Pregunta> getPorNivel(@PathVariable String nivel) {
+        return service.obtenerPorNivel(nivel);
+    }
+
+}

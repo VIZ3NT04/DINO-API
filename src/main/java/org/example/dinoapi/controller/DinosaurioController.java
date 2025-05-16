@@ -46,7 +46,6 @@ public class DinosaurioController {
     @GetMapping("/generar-aleatorio-imagen")
     public ResponseEntity<Dinosaurio> generarDinoCompletoConImagen() {
         Dinosaurio dino = service.generarDinosaurioAleatorio();
-
         String tipo = dino.getTipo();
         String caracteristicas = "";
 

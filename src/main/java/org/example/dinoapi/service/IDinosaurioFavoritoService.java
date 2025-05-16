@@ -11,5 +11,5 @@ public interface IDinosaurioFavoritoService {
     int contarPorEmail(String email);
     List<DinosaurioFavorito> buscarPorEmail(String email);
     DinosaurioFavorito actualizarDinosaurioFavorito(DinosaurioFavorito dinoFavorito);
-
+    void deleteDinosauriosFavorito(String email);
 }
