@@ -1,13 +1,9 @@
 package org.example.dinoapi.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.dinoapi.model.Dinosaurio;
 import org.example.dinoapi.model.Periodo;
-import org.example.dinoapi.model.Usuario;
 import org.example.dinoapi.repository.IDinosaurioRepository;
 import org.example.dinoapi.repository.IPeriodoRepository;
-import org.example.dinoapi.repository.IUsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,8 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.Base64;
 import java.util.List;
 import java.util.Random;
 
@@ -76,7 +70,7 @@ public class DinosaurioServiceImpl implements IDinosaurioService {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             headers.setAccept(List.of(MediaType.IMAGE_PNG));
-            headers.set("Authorization", "Bearer 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");
+            headers.set("Authorization", "Bearer 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");
 
             String body = "{\"inputs\": \"" + prompt + "\"}";
             HttpEntity<String> entity = new HttpEntity<>(body, headers);
@@ -97,15 +91,11 @@ public class DinosaurioServiceImpl implements IDinosaurioService {
         Random rand = new Random();
 
             String tipo = TIPOS[rand.nextInt(TIPOS.length)];
-
-            // Obtener un periodo aleatorio de la base de datos
             Periodo periodo = obtenerPeriodoAleatorio();
 
-            // Generar dimensiones aleatorias
-            float longitud = 10 + rand.nextFloat() * 20;  // Longitud aleatoria entre 10 y 30 metros
-            float peso = 500 + rand.nextFloat() * 5000;  // Peso aleatorio entre 500 y 5500 kg
+            float longitud = 10 + rand.nextFloat() * 20;
+            float peso = 500 + rand.nextFloat() * 5000;
 
-            // Crear el dinosaurio con los datos generados
             Dinosaurio dino = new Dinosaurio();
             dino.setNombre(generarNombreInventado());
             dino.setTipo(tipo);
@@ -113,14 +103,13 @@ public class DinosaurioServiceImpl implements IDinosaurioService {
             dino.setLongitud(longitud);
             dino.setPeso(peso);
             dino.setDescripcion("Un dinosaurio de tipo " + tipo + " que vivió en el periodo " + periodo.getNombre() + ".");
-            dino.setFoto(""); // Lo llenaremos después con la imagen generada
+            dino.setFoto("");
 
             return dino;
         }
 
         private Periodo obtenerPeriodoAleatorio() {
-            // Obtener un periodo aleatorio de la base de datos (ajustar según tus datos reales)
-            List<Periodo> periodos = periodoRepo.findAll(); // Asegúrate de que tienes un repositorio de Periodo
+            List<Periodo> periodos = periodoRepo.findAll();
             Random rand = new Random();
             return periodos.get(rand.nextInt(periodos.size()));
         }
