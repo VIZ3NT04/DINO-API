@@ -13,7 +13,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .addResourceLocations("file:C:/Users/Vicent/IdeaProjects/DINO-API/uploads/");
         registry
                 .addResourceHandler("/fotos_dino/**")
-                .addResourceLocations("file:C:/Users/Vicent/IdeaProjects/DINO-API/fotos_dino/");
+                .addResourceLocations("src/main/resources/static/fotos_dino/");
 
 
     }
