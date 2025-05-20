@@ -88,7 +88,6 @@ public class DinosaurioFavoritoController {
 
         String fileName = dino.getId() + ".png";
 
-        // 🔁 Subir imagen a Supabase
         String publicUrl = uploader.subir(foto, fileName);
 
         dino.setFoto(publicUrl);
