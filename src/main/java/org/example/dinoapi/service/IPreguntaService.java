@@ -7,4 +7,5 @@ import java.util.List;
 public interface IPreguntaService {
     List<Pregunta> obtenerPorNivel(String nivel);
     List<Pregunta> obtenerTodas();
+    Pregunta guardar(Pregunta pregunta);
 }

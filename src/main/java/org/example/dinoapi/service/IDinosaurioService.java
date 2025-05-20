@@ -15,5 +15,6 @@ public interface IDinosaurioService {
 
     byte[] generarImagenComoBytes(String prompt);
     Page<Dinosaurio> listarDinosauriosPaginados(int page, int size);
+    Dinosaurio guardar(Dinosaurio dino);
 
 }

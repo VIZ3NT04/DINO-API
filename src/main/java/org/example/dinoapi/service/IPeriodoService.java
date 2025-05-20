@@ -8,4 +8,5 @@ import java.util.List;
 public interface IPeriodoService {
     List<Periodo> listaPeriodos();
     Periodo listaPeriodosPorId(Integer id);
+    Periodo guardar(Periodo periodo);
 }

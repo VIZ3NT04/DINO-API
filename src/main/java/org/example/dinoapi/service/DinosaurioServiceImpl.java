@@ -113,4 +113,9 @@ public class DinosaurioServiceImpl implements IDinosaurioService {
             Random rand = new Random();
             return periodos.get(rand.nextInt(periodos.size()));
         }
+
+        @Override
+        public Dinosaurio guardar(Dinosaurio dino) {
+            return repo.save(dino);
+        }
 }

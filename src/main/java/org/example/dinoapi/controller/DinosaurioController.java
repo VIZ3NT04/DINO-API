@@ -93,4 +93,14 @@ public class DinosaurioController {
         return new ResponseEntity<>(pagina.getContent(), HttpStatus.OK);
     }
 
+    @PostMapping
+    public ResponseEntity<List<Dinosaurio>> guardarDinosaurios(@RequestBody List<Dinosaurio> dinosaurios) {
+        List<Dinosaurio> guardados = dinosaurios.stream()
+                .map(d -> service.guardar(d))
+                .toList();
+        return new ResponseEntity<>(guardados, HttpStatus.CREATED);
+    }
+
+
+
 }

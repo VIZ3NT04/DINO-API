@@ -4,6 +4,7 @@ import org.example.dinoapi.model.Pregunta;
 import org.example.dinoapi.repository.IPreguntaRepository;
 import org.example.dinoapi.service.IPreguntaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +28,14 @@ public class PreguntaController {
     @GetMapping("/nivel/{nivel}")
     public List<Pregunta> getPorNivel(@PathVariable String nivel) {
         return service.obtenerPorNivel(nivel);
+    }
+
+    @PostMapping
+    public ResponseEntity<List<Pregunta>> guardarPreguntas(@RequestBody List<Pregunta> preguntas) {
+        List<Pregunta> guardadas = preguntas.stream()
+                .map(p -> service.guardar(p))
+                .toList();
+        return new ResponseEntity<>(guardadas, HttpStatus.CREATED);
     }
 
 }

@@ -26,6 +26,14 @@ public class PeriodoController {
         return new ResponseEntity<>(periodos, HttpStatus.OK);
     }
 
+    @PostMapping
+    public ResponseEntity<List<Periodo>> guardarPeriodos(@RequestBody List<Periodo> periodos) {
+        List<Periodo> guardados = periodos.stream()
+                .map(p -> service.guardar(p))
+                .toList();
+        return new ResponseEntity<>(guardados, HttpStatus.CREATED);
+    }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<Periodo> findById(@PathVariable("id") Integer id) {

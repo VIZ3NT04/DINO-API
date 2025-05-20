@@ -22,4 +22,9 @@ public class PreguntaServiceImpl implements IPreguntaService {
         return repository.findAll();
     }
 
+    @Override
+    public Pregunta guardar(Pregunta pregunta) {
+        return repository.save(pregunta);
+    }
+
 }

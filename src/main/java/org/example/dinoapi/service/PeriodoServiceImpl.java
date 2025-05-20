@@ -23,4 +23,10 @@ public class PeriodoServiceImpl implements IPeriodoService {
     public Periodo listaPeriodosPorId(Integer id) {
         return repo.getReferenceById(id);
     }
+
+    @Override
+    public Periodo guardar(Periodo periodo) {
+        return repo.save(periodo);
+    }
+
 }
