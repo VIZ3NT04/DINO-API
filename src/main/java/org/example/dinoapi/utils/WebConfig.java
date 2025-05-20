@@ -10,7 +10,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry
                 .addResourceHandler("/fotos_dino/**")
-                .addResourceLocations("src/main/resources/static/fotos_dino/");
+                .addResourceLocations("classpath:/static/fotos_dino/");
 
 
     }
