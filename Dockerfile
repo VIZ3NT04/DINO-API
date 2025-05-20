@@ -4,7 +4,7 @@ WORKDIR /app
 COPY pom.xml .
 COPY src ./src
 
-RUN mvn clean packge -DikipTests
+RUN mvn clean packge -DiskipTests
 
 FROM openjdk:21-jdk-slim
 
