@@ -1,0 +1,16 @@
+FROM maven:3.9.0-eclipse-temurin-17 as build
+
+WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+
+RUN mvn clean packge -DikipTests
+
+FROM openjdk:21-jdk-slim
+
+WORKDIR /app
+COPY --from=build /app/target/DINO-API-0.0.1-SNAPSHOT.jar app.jar
+
+EXPOSE 8080
+
+ENTRYPOINT ["java", "-jar" , "app.jar"]
