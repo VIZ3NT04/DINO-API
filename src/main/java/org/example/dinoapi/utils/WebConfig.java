@@ -9,9 +9,6 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry
-                .addResourceHandler("/uploads/**")
-                .addResourceLocations("file:C:/Users/Vicent/IdeaProjects/DINO-API/uploads/");
-        registry
                 .addResourceHandler("/fotos_dino/**")
                 .addResourceLocations("src/main/resources/static/fotos_dino/");
 

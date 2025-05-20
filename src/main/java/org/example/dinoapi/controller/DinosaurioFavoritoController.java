@@ -3,6 +3,7 @@ package org.example.dinoapi.controller;
 import org.example.dinoapi.model.DinosaurioFavorito;
 import org.example.dinoapi.model.dto.DinosaurioFavoritoRequestDTO;
 import org.example.dinoapi.service.IDinosaurioFavoritoService;
+import org.example.dinoapi.utils.SupabaseUploader;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,10 @@ public class DinosaurioFavoritoController {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private SupabaseUploader uploader;
+
 
     @PostMapping
     public DinosaurioFavorito crearDinosaurioFavorito(@RequestBody DinosaurioFavoritoRequestDTO dto) {
@@ -83,14 +88,10 @@ public class DinosaurioFavoritoController {
 
         String fileName = dino.getId() + ".png";
 
-        // 3. Guardar archivo en carpeta
-        String uploadDir = "C:/Users/Vicent/IdeaProjects/DINO-API/uploads/";
-        Files.createDirectories(Paths.get(uploadDir));
-        Path filePath = Paths.get(uploadDir, fileName);
-        Files.write(filePath, foto.getBytes());
+        // 🔁 Subir imagen a Supabase
+        String publicUrl = uploader.subir(foto, fileName);
 
-        // 4. Actualizar la ruta de la imagen
-        dino.setFoto("/uploads/" + fileName);
+        dino.setFoto(publicUrl);
         dino = service.actualizarDinosaurioFavorito(dino);
 
         return ResponseEntity.ok(dino);
