@@ -21,7 +21,7 @@ public class SupabaseUploader {
 
             HttpEntity<byte[]> requestEntity = new HttpEntity<>(archivo.getBytes(), headers);
 
-            String url = SUPABASE_URL + "/storage/v1/upload/object/" + BUCKET + "/" + nombreArchivo;
+            String url = SUPABASE_URL + "/storage/v1/object/" + BUCKET + "/" + nombreArchivo;
 
             RestTemplate restTemplate = new RestTemplate();
             ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class);
