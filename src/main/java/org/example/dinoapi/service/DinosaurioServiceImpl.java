@@ -70,7 +70,7 @@ public class DinosaurioServiceImpl implements IDinosaurioService {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             headers.setAccept(List.of(MediaType.IMAGE_PNG));
-            headers.set("Authorization", "Bearer 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");
+            headers.set("Authorization", "Bearer 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");
 
             String body = "{\"inputs\": \"" + prompt + "\"}";
             HttpEntity<String> entity = new HttpEntity<>(body, headers);
@@ -118,4 +118,9 @@ public class DinosaurioServiceImpl implements IDinosaurioService {
         public Dinosaurio guardar(Dinosaurio dino) {
             return repo.save(dino);
         }
+
+    @Override
+    public void deleteDinosaurio(Integer id) {
+        repo.deleteById(id);
+    }
 }

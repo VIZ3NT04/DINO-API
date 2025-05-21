@@ -65,7 +65,7 @@ public class DinosaurioController {
 
         String prompt = "a fantasy " + tipo + " dinosaur named " + dino.getNombre() +
                 ", " + caracteristicas + ", prehistoric jungle, " + dino.getPeriodo().getNombre() +
-                " period, cartoon style, full body, vivid colors, dynamic pose, max five limbs";
+                " period, cartoon style, full body, vivid colors, dynamic pose, max four limbs";
 
 
         byte[] imagenBytes = service.generarImagenComoBytes(prompt);
@@ -76,7 +76,7 @@ public class DinosaurioController {
 
         String base64Imagen = Base64.getEncoder().encodeToString(imagenBytes);
 
-        dino.setFoto(base64Imagen); // Suponiendo que el modelo tiene un campo `foto`
+        dino.setFoto(base64Imagen);
 
         return new ResponseEntity<>(dino, HttpStatus.OK);
     }
@@ -101,6 +101,10 @@ public class DinosaurioController {
         return new ResponseEntity<>(guardados, HttpStatus.CREATED);
     }
 
-
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminar(@PathVariable("id") Integer id) {
+        service.deleteDinosaurio(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 }

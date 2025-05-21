@@ -69,7 +69,6 @@ public class DinosaurioFavoritoController {
             @RequestParam("email_usuario") String emailUsuario,
             @RequestParam("foto") MultipartFile foto) throws IOException {
 
-        // 1. Crear objeto sin foto para obtener ID
         DinosaurioFavorito dino = new DinosaurioFavorito();
         dino.setNombre(nombre);
         dino.setTipo(tipo);
@@ -77,8 +76,7 @@ public class DinosaurioFavoritoController {
         dino.setEmailUsuario(emailUsuario);
         dino.setFoto(""); // temporal
 
-        dino = service.insertarDinosaurioFavorito(dino); // Guarda y obtiene ID
-
+        dino = service.insertarDinosaurioFavorito(dino);
         if (dino == null) {
             return ResponseEntity
                     .badRequest()
