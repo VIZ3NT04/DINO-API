@@ -12,6 +12,7 @@ public class EmailService {
 
     public void enviarCodigoVerificacion(String to, String codigo) {
         SimpleMailMessage mensaje = new SimpleMailMessage();
+        mensaje.setFrom("dinoappverify@gmail.com");
         mensaje.setTo(to);
         mensaje.setSubject("Código de verificación");
         mensaje.setText("Tu código de verificación es: " + codigo);
