@@ -38,4 +38,10 @@ public class PreguntaController {
         return new ResponseEntity<>(guardadas, HttpStatus.CREATED);
     }
 
+    @GetMapping("/health")
+    public String health() {
+        return "OK";
+    }
+
+
 }
