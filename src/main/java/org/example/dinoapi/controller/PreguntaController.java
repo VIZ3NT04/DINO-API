@@ -40,6 +40,7 @@ public class PreguntaController {
 
     @GetMapping("/health")
     public String health() {
+        System.out.println("PING FET A:" + new Date());
         return "OK";
     }
 
