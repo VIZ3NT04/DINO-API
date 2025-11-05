@@ -28,7 +28,6 @@ public class UsuarioController {
     public ResponseEntity<List<Usuario>> findAll() {
         return new ResponseEntity<>(service.listaUsuarios(), HttpStatus.OK);
     }
-    
 
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Usuario>> findById(@PathVariable("id") Integer id) {
@@ -39,8 +38,6 @@ public class UsuarioController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
-
 
     @GetMapping("/login")
     public ResponseEntity<Usuario> login(@Valid @RequestParam("email") String email, @Valid @RequestParam("password") String password) {
