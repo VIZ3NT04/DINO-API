@@ -28,6 +28,7 @@ public class UsuarioController {
     public ResponseEntity<List<Usuario>> findAll() {
         return new ResponseEntity<>(service.listaUsuarios(), HttpStatus.OK);
     }
+    
 
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Usuario>> findById(@PathVariable("id") Integer id) {

@@ -12,6 +12,7 @@ import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 
@@ -28,6 +29,7 @@ public class UsuarioServiceImpl implements IUsuarioService{
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
 
     @Override
     public Usuario insertUser(UsuarioRequestDTO usuario) {
@@ -46,6 +48,8 @@ public class UsuarioServiceImpl implements IUsuarioService{
             return repo.save(u);
         } catch (ObjectOptimisticLockingFailureException e) {
             throw new RuntimeException("Error de concurrencia al insertar el usuario", e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
