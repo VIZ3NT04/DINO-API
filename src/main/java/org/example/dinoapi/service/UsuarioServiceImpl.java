@@ -29,7 +29,6 @@ public class UsuarioServiceImpl implements IUsuarioService{
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-
     @Override
     public Usuario insertUser(UsuarioRequestDTO usuario) {
         try {

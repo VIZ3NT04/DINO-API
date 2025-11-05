@@ -17,7 +17,7 @@ public class SupabaseUploader {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
             headers.set("Authorization", SERVICE_ROLE_KEY);
-            headers.set("x-upsert", "true"); // permite sobrescribir si ya existe
+            headers.set("x-upsert", "true");
 
             HttpEntity<byte[]> requestEntity = new HttpEntity<>(archivo.getBytes(), headers);
 
