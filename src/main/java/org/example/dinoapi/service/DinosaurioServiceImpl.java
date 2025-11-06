@@ -24,6 +24,9 @@ public class DinosaurioServiceImpl implements IDinosaurioService {
     @Autowired
     private IPeriodoRepository periodoRepo;
 
+    @Autowired
+    private RestTemplate restTemplate;
+
     private static final String[] TIPOS = {"carnívoro", "herbívoro", "omnívoro"};
     private static final String[] PREFIJOS = {
             "Mega", "Cryo", "Bronto", "Stego", "Veloci", "Giga", "Gita" , "Ptero",
@@ -68,7 +71,6 @@ public class DinosaurioServiceImpl implements IDinosaurioService {
 
     public byte[] generarImagenComoBytes(String prompt) {
         try {
-            RestTemplate restTemplate = new RestTemplate();
             String encodedPrompt = URLEncoder.encode(prompt, StandardCharsets.UTF_8);
             String apiUrl = "https://image.pollinations.ai/prompt/" + encodedPrompt;
             ResponseEntity<byte[]> response = restTemplate.exchange(
