@@ -67,22 +67,21 @@ public class DinosaurioServiceImpl implements IDinosaurioService {
     public byte[] generarImagenComoBytes(String prompt) {
         try {
             RestTemplate restTemplate = new RestTemplate();
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            headers.setAccept(List.of(MediaType.IMAGE_PNG));
-            headers.set("Authorization", "Bearer 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");
-
-            String body = "{\"inputs\": \"" + prompt + "\"}";
-            HttpEntity<String> entity = new HttpEntity<>(body, headers);
-
-            String apiUrl = "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0";
-            ResponseEntity<byte[]> response = restTemplate.exchange(apiUrl, HttpMethod.POST, entity, byte[].class);
-
+            String encodedPrompt = URLEncoder.encode(prompt, StandardCharsets.UTF_8);
+            String apiUrl = "https://image.pollinations.ai/prompt/" + encodedPrompt;
+            ResponseEntity<byte[]> response = restTemplate.exchange(
+                    apiUrl,
+                    HttpMethod.GET,
+                    null,
+                    byte[].class
+            );
             return response.getBody();
+
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
+    }
     }
 
 
