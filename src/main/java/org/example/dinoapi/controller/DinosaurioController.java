@@ -69,23 +69,23 @@ public class DinosaurioController {
                 //" period, cartoon style, full body, vivid colors, dynamic pose, max four limbs";
 */
             String prompt = "";
-            String basePrompt = "a fantasy " + tipo + " dinosaur named " + dino.getNombre() +
-                ", " + caracteristicas +
-                ", prehistoric jungle, " + dino.getPeriodo().getNombre() +
-                " period, cartoon style, dynamic pose, vivid colors, detailed textures, cinematic cartoon illustration, full body, dramatic lighting";
+            //String basePrompt = "a fantasy " + tipo + " dinosaur named " + dino.getNombre() +
+            //    ", " + caracteristicas +
+            //    ", prehistoric jungle, " + dino.getPeriodo().getNombre() +
+            //    " period, cartoon style, dynamic pose, vivid colors, detailed textures, cinematic cartoon illustration, full body, dramatic lighting";
 
         switch (tipo.toLowerCase()) {
             case "carnívoro":
-                prompt = basePrompt + ", sharp teeth, long claws, muscular build, predatory stance, roaring, dangerous look, reptilian eyes, red or dark tones, fierce expression";
+                prompt =  "dinosaur named " + dino.getNombre() + " in " + dino.getPeriodo().getNombre() + ", a full-body, photorealistic image of a large **bipedal carnivorous dinosaur**, similar in build to a Raptor or Allosaurus. The creature has a muscular body, thick powerful legs, and is poised aggressively. Emphasize **serrated sharp teeth**, strong jaws, and **razor-like claws** on its feet and short arms. The skin is a camouflage pattern of dark scales. Set it in a dense forest, emerging from the shadows, with dramatic, low-key lighting. Highly detailed, cinematic, predator view.";
                 break;
             case "herbívoro":
-                prompt = basePrompt + ", large peaceful dinosaur, gentle expression, grazing on plants, rounded features, earthy green or brown tones, calm and majestic, friendly appearance, inspired by Triceratops or Brachiosaurus";
+                prompt = "dinosaur named " + dino.getNombre() + " in " + dino.getPeriodo().getNombre() + " a full-body, photorealistic image of a massive **quadrupedal herbivorous dinosaur**, similar in scale to a Triceratops or Brachiosaurus. The creature has a thick, armored hide and large, sturdy limbs supporting its immense weight. Highlight **protective features** like large spikes, thick plating, or defensive horns on its head and back. The dinosaur is peacefully grazing in an open prehistoric grassland under a warm sun, focused on texture and scale. Extremely detailed, natural lighting, majestic wide-angle shot, one head and four paws.";
                 break;
             case "omnívoro":
-                prompt = basePrompt + ", agile dinosaur, alert posture, curious face, moderate claws and teeth, balanced proportions, mid-sized, mix of gentle and fierce traits, bright tones, intelligent look";
+                prompt = "dinosaur named " + dino.getNombre() + " in " + dino.getPeriodo().getNombre() + " a full-body, photorealistic image of a mid-sized **omnivorous dinosaur**, agile and robust, with a blend of features for both hunting and foraging. The dinosaur has strong legs for running and a relatively long tail for balance. Focus on a versatile mouth structure, showing **dientes pequeños y variados** adecuados para carne y plantas. The skin is mottled green and brown, perfectly camouflaged in a swampy environment, searching for food. High-resolution, detailed scales, subtle wet reflections.";
                 break;
             default:
-                prompt = basePrompt + ", generic dinosaur appearance";
+                prompt = "generic dinosaur appearance";
         }
 
 
