@@ -48,7 +48,7 @@ public class DinosaurioController {
         Dinosaurio dino = service.generarDinosaurioAleatorio();
         String tipo = dino.getTipo();
         String caracteristicas = "";
-
+/*
         switch (tipo.toLowerCase()) {
             case "carnívoro":
                 caracteristicas = "sharp teeth, claws, aggressive posture";
@@ -67,6 +67,25 @@ public class DinosaurioController {
                 ", " + caracteristicas + ", prehistoric jungle, " + dino.getPeriodo().getNombre() +
                 " period, cartoon style, dynamic pose, vivid colors, detailed textures, fierce expression, sharp teeth and claws, strong muscles, dramatic lighting, cinematic cartoon illustration, full body";
                 //" period, cartoon style, full body, vivid colors, dynamic pose, max four limbs";
+*/
+            String basePrompt = "a fantasy " + tipo + " dinosaur named " + dino.getNombre() +
+                ", " + caracteristicas +
+                ", prehistoric jungle, " + dino.getPeriodo().getNombre() +
+                " period, cartoon style, dynamic pose, vivid colors, detailed textures, cinematic cartoon illustration, full body, dramatic lighting";
+            
+            switch (tipo.toLowerCase()) {
+                case "carnívoro":
+                    prompt = basePrompt + ", fierce expression, sharp teeth and claws, strong muscles, intimidating look";
+                    break;
+                case "herbívoro":
+                    prompt = basePrompt + ", calm and majestic appearance, gentle expression, large body, peaceful posture, plant-eating dinosaur";
+                    break;
+                case "omnivoro":
+                    prompt = basePrompt + ", curious and alert expression, agile body, mix of claws and plant-eater traits, balanced proportions";
+                    break;
+                default:
+                    prompt = basePrompt + ", generic dinosaur look";
+            }
 
 
         byte[] imagenBytes = service.generarImagenComoBytes(prompt);
