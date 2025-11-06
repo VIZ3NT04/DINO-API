@@ -73,20 +73,20 @@ public class DinosaurioController {
                 ", " + caracteristicas +
                 ", prehistoric jungle, " + dino.getPeriodo().getNombre() +
                 " period, cartoon style, dynamic pose, vivid colors, detailed textures, cinematic cartoon illustration, full body, dramatic lighting";
-            
-            switch (tipo.toLowerCase()) {
-                case "carnívoro":
-                    prompt = basePrompt + ", fierce expression, sharp teeth and claws, strong muscles, intimidating look";
-                    break;
-                case "herbívoro":
-                    prompt = basePrompt + ", calm and majestic appearance, gentle expression, large body, peaceful posture, plant-eating dinosaur";
-                    break;
-                case "omnivoro":
-                    prompt = basePrompt + ", curious and alert expression, agile body, mix of claws and plant-eater traits, balanced proportions";
-                    break;
-                default:
-                    prompt = basePrompt + ", generic dinosaur look";
-            }
+
+        switch (tipo.toLowerCase()) {
+            case "carnívoro":
+                prompt = basePrompt + ", sharp teeth, long claws, muscular build, predatory stance, roaring, dangerous look, reptilian eyes, red or dark tones, fierce expression";
+                break;
+            case "herbívoro":
+                prompt = basePrompt + ", large peaceful dinosaur, gentle expression, grazing on plants, rounded features, earthy green or brown tones, calm and majestic, friendly appearance, inspired by Triceratops or Brachiosaurus";
+                break;
+            case "omnívoro":
+                prompt = basePrompt + ", agile dinosaur, alert posture, curious face, moderate claws and teeth, balanced proportions, mid-sized, mix of gentle and fierce traits, bright tones, intelligent look";
+                break;
+            default:
+                prompt = basePrompt + ", generic dinosaur appearance";
+        }
 
 
         byte[] imagenBytes = service.generarImagenComoBytes(prompt);
