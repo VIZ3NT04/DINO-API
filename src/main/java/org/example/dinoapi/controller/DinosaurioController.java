@@ -68,6 +68,7 @@ public class DinosaurioController {
                 " period, cartoon style, dynamic pose, vivid colors, detailed textures, fierce expression, sharp teeth and claws, strong muscles, dramatic lighting, cinematic cartoon illustration, full body";
                 //" period, cartoon style, full body, vivid colors, dynamic pose, max four limbs";
 */
+            String prompt = "";
             String basePrompt = "a fantasy " + tipo + " dinosaur named " + dino.getNombre() +
                 ", " + caracteristicas +
                 ", prehistoric jungle, " + dino.getPeriodo().getNombre() +
