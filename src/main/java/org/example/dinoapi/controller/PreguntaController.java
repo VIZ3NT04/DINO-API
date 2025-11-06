@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/preguntas")
+@RequestMapping("/api/v1/preguntas")
 public class PreguntaController {
 
     @Autowired

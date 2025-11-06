@@ -10,7 +10,7 @@ import java.util.Base64;
 import java.util.List;
 
 @RestController
-@RequestMapping("/dinosaurios")
+@RequestMapping("/api/v1/dinosaurios")
 public class DinosaurioController {
 
     @Autowired

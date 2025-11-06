@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/periodos")
+@RequestMapping("/api/v1/periodos")
 public class PeriodoController {
 
     @Autowired

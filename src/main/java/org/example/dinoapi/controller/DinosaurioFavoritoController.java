@@ -19,7 +19,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/dinosaurios_favoritos")
+@RequestMapping("/api/v1/dinosaurios_favoritos")
 public class DinosaurioFavoritoController {
 
     @Autowired
