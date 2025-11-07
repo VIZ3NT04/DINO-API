@@ -74,7 +74,7 @@ public class DinosaurioController {
 
         switch (tipo.toLowerCase()) {
             case "carnívoro":
-                String[] subCarn = {"raptor-like", "allosaurus-like", "spinosaurus-like", "tyrannosaurus-like"};
+                String[] subCarn = {"raptor-like", "allosaurus-like", "spinosaurus-like", "tyrannosaurus-like", "carnotaurous-like"};
                 prompt =  "dinosaur named " + dino.getNombre() + " in " + dino.getPeriodo().getNombre() + ", a full-body, photorealistic image of a large " + subCarn[rand.nextInt(subCarn.length)]+ " **bipedal carnivorous dinosaur**, " +
                         " similar in build to a Raptor or Allosaurus. The creature has a muscular body, thick powerful legs, and is poised aggressively. Emphasize **serrated sharp teeth**" +
                         ", strong jaws, and **razor-like claws** on its feet and short arms." +
