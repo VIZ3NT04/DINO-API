@@ -51,8 +51,6 @@ public class DinosaurioController {
         String prompt = "";
         Random rand = new Random();
 
-
-
         String[] colores = {
                 "green and brown scales",
                 "dark grey skin with red streaks",
@@ -63,45 +61,60 @@ public class DinosaurioController {
 
         String[] acciones = {
                 "grazing peacefully",
-                "roaring towards the sky",
+                "roaring toward the sky",
                 "walking slowly through vegetation",
                 "drinking from a river",
                 "emerging from the shadows"
         };
 
+        String[] entornos = {
+                "a misty prehistoric jungle",
+                "an open grassland under warm sunlight",
+                "a rocky canyon surrounded by ferns",
+                "a dense forest near a riverbank",
+                "a swampy marsh full of tall plants"
+        };
+
         String color = colores[rand.nextInt(colores.length)];
         String accion = acciones[rand.nextInt(acciones.length)];
+        String entorno = entornos[rand.nextInt(entornos.length)];
 
         switch (tipo.toLowerCase()) {
-            case "carnívoro":
-                String[] subCarn = {"raptor-like", "allosaurus-like", "spinosaurus-like", "tyrannosaurus-like", "carnotaurous-like"};
-                prompt =  "dinosaur named " + dino.getNombre() + " in " + dino.getPeriodo().getNombre() + ", a full-body, photorealistic image of a large " + subCarn[rand.nextInt(subCarn.length)]+ " **bipedal carnivorous dinosaur**, " +
-                        " similar in build to a Raptor or Allosaurus. The creature has a muscular body, thick powerful legs, and is poised aggressively. Emphasize **serrated sharp teeth**" +
-                        ", strong jaws, and **razor-like claws** on its feet and short arms." +
-                        " The skin " + color+ ". Set it in a dense forest, " + accion + " . Highly detailed, cinematic, predator view, one head.";
 
+            case "carnívoro":
+                String[] subCarn = {"raptor-like", "allosaurus-like", "spinosaurus-like", "tyrannosaurus-like", "carnotaurus-like"};
+                prompt = "A full-body, photorealistic image of a large " + subCarn[rand.nextInt(subCarn.length)] +
+                        " carnivorous dinosaur named " + dino.getNombre() +
+                        " from the " + dino.getPeriodo().getNombre() + " period. " +
+                        "It has " + color + ", powerful legs, strong jaws with serrated teeth, and sharp claws on its short arms. " +
+                        "The creature is " + accion + " in " + entorno + ". " +
+                        "Highly detailed, cinematic predator lighting, one head.";
                 break;
+
             case "herbívoro":
                 String[] subHerb = {"triceratops-like", "ankylosaurus-like", "brachiosaurus-like", "stegosaurus-like"};
-                prompt = "dinosaur named " + dino.getNombre() + " in " + dino.getPeriodo().getNombre() + " a full-body, photorealistic image of a massive " + subHerb[rand.nextInt(subHerb.length)] + " **quadrupedal herbivorous dinosaur**, " +
-                        " similar in scale to a Triceratops or Brachiosaurus. The creature has a thick, armored hide and large," +
-                        " sturdy limbs supporting its immense weight. Highlight **protective features** like large spikes, thick plating, or defensive horns on its head and back. " +
-                        " The dinosaur is peacefully grazing in an open prehistoric grassland under a warm sun" +
-                        ", focused on texture and scale. Extremely detailed, natural lighting, majestic wide-angle shot, one head and four paws," +
-                        color + ", " + accion;
-
+                prompt = "A full-body, photorealistic image of a massive " + subHerb[rand.nextInt(subHerb.length)] +
+                        " herbivorous dinosaur named " + dino.getNombre() +
+                        " from the " + dino.getPeriodo().getNombre() + " period. " +
+                        "It has " + color + " and large, sturdy limbs supporting its immense weight. " +
+                        "Highlight protective features like spikes, thick plating, or defensive horns. " +
+                        "The dinosaur is " + accion + " in " + entorno + ", under natural sunlight. " +
+                        "Extremely detailed textures and scales, one head, four legs.";
                 break;
+
             case "omnívoro":
-                String[] subOmn  = {"ornithomimus-like", "iguanodon-like", "small theropod", "hypsilophodon-like"};
-                prompt = "dinosaur named " + dino.getNombre() + " in " + dino.getPeriodo().getNombre() + " a full-body, photorealistic image of a mid-sized , " + subOmn[rand.nextInt(subOmn.length)]+ " **omnivorous dinosaur**, " +
-                        "agile and robust, with a blend of features for both hunting and foraging. " +
-                        "The dinosaur has strong legs for running and a relatively long tail for balance." +
-                        " Focus on a versatile mouth structure, showing **small and varied teeth** suitable for meat and plants. " +
-                        "The skin " + color + ", perfectly camouflaged in a swampy environment, searching for food, "+ accion + ". High-resolution, detailed scales, subtle wet reflections, one head.";
-
+                String[] subOmn = {"ornithomimus-like", "iguanodon-like", "small theropod", "hypsilophodon-like"};
+                prompt = "A full-body, photorealistic image of a mid-sized " + subOmn[rand.nextInt(subOmn.length)] +
+                        " omnivorous dinosaur named " + dino.getNombre() +
+                        " from the " + dino.getPeriodo().getNombre() + " period. " +
+                        "It is agile and robust, with strong legs for running and a long tail for balance. " +
+                        "It has " + color + ", suitable for both hunting and foraging. " +
+                        "The dinosaur is " + accion + " in " + entorno + ". " +
+                        "High-resolution, realistic lighting and detailed skin reflections.";
                 break;
+
             default:
-                prompt = "generic dinosaur appearance";
+                prompt = "A generic full-body photorealistic dinosaur in a prehistoric environment, detailed and cinematic lighting.";
         }
 
         byte[] imagenBytes = service.generarImagenComoBytes(prompt);
@@ -111,7 +124,6 @@ public class DinosaurioController {
         }
 
         String base64Imagen = Base64.getEncoder().encodeToString(imagenBytes);
-
         dino.setFoto(base64Imagen);
 
         return new ResponseEntity<>(dino, HttpStatus.OK);
