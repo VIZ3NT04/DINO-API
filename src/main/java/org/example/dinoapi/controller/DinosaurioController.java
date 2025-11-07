@@ -8,6 +8,7 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import java.util.Base64;
 import java.util.List;
+import java.util.Random;
 
 @RestController
 @RequestMapping("/api/v1/dinosaurios")
@@ -48,16 +49,56 @@ public class DinosaurioController {
         Dinosaurio dino = service.generarDinosaurioAleatorio();
         String tipo = dino.getTipo();
         String prompt = "";
+        Random rand = new Random();
+
+
+
+        String[] colores = {
+                "green and brown scales",
+                "dark grey skin with red streaks",
+                "olive skin with yellowish spots",
+                "bluish tones on the back and head",
+                "tan armor plates with dark stripes"
+        };
+
+        String[] acciones = {
+                "grazing peacefully",
+                "roaring towards the sky",
+                "walking slowly through vegetation",
+                "drinking from a river",
+                "emerging from the shadows"
+        };
+
+        String color = colores[rand.nextInt(colores.length)];
+        String accion = acciones[rand.nextInt(acciones.length)];
 
         switch (tipo.toLowerCase()) {
             case "carnívoro":
-                prompt =  "dinosaur named " + dino.getNombre() + " in " + dino.getPeriodo().getNombre() + ", a full-body, photorealistic image of a large **bipedal carnivorous dinosaur**, similar in build to a Raptor or Allosaurus. The creature has a muscular body, thick powerful legs, and is poised aggressively. Emphasize **serrated sharp teeth**, strong jaws, and **razor-like claws** on its feet and short arms. The skin is a camouflage pattern of dark scales. Set it in a dense forest, emerging from the shadows, with dramatic, low-key lighting. Highly detailed, cinematic, predator view, one head.";
+                String[] subCarn = {"raptor-like", "allosaurus-like", "spinosaurus-like", "tyrannosaurus-like"};
+                prompt =  "dinosaur named " + dino.getNombre() + " in " + dino.getPeriodo().getNombre() + ", a full-body, photorealistic image of a large " + subCarn[rand.nextInt(subCarn.length)]+ " **bipedal carnivorous dinosaur**, " +
+                        " similar in build to a Raptor or Allosaurus. The creature has a muscular body, thick powerful legs, and is poised aggressively. Emphasize **serrated sharp teeth**" +
+                        ", strong jaws, and **razor-like claws** on its feet and short arms." +
+                        " The skin " + color+ ". Set it in a dense forest, " + accion + " . Highly detailed, cinematic, predator view, one head.";
+
                 break;
             case "herbívoro":
-                prompt = "dinosaur named " + dino.getNombre() + " in " + dino.getPeriodo().getNombre() + " a full-body, photorealistic image of a massive **quadrupedal herbivorous dinosaur**, similar in scale to a Triceratops or Brachiosaurus. The creature has a thick, armored hide and large, sturdy limbs supporting its immense weight. Highlight **protective features** like large spikes, thick plating, or defensive horns on its head and back. The dinosaur is peacefully grazing in an open prehistoric grassland under a warm sun, focused on texture and scale. Extremely detailed, natural lighting, majestic wide-angle shot, one head and four paws.";
+                String[] subHerb = {"triceratops-like", "ankylosaurus-like", "brachiosaurus-like", "stegosaurus-like"};
+                prompt = "dinosaur named " + dino.getNombre() + " in " + dino.getPeriodo().getNombre() + " a full-body, photorealistic image of a massive " + subHerb[rand.nextInt(subHerb.length)] + " **quadrupedal herbivorous dinosaur**, " +
+                        " similar in scale to a Triceratops or Brachiosaurus. The creature has a thick, armored hide and large," +
+                        " sturdy limbs supporting its immense weight. Highlight **protective features** like large spikes, thick plating, or defensive horns on its head and back. " +
+                        " The dinosaur is peacefully grazing in an open prehistoric grassland under a warm sun" +
+                        ", focused on texture and scale. Extremely detailed, natural lighting, majestic wide-angle shot, one head and four paws," +
+                        color + ", " + accion;
+
                 break;
             case "omnívoro":
-                prompt = "dinosaur named " + dino.getNombre() + " in " + dino.getPeriodo().getNombre() + " a full-body, photorealistic image of a mid-sized **omnivorous dinosaur**, agile and robust, with a blend of features for both hunting and foraging. The dinosaur has strong legs for running and a relatively long tail for balance. Focus on a versatile mouth structure, showing **small and varied teeth** suitable for meat and plants. The skin is mottled green and brown, perfectly camouflaged in a swampy environment, searching for food. High-resolution, detailed scales, subtle wet reflections, one head.";
+                String[] subOmn  = {"ornithomimus-like", "iguanodon-like", "small theropod", "hypsilophodon-like"};
+                prompt = "dinosaur named " + dino.getNombre() + " in " + dino.getPeriodo().getNombre() + " a full-body, photorealistic image of a mid-sized , " + subOmn[rand.nextInt(subOmn.length)]+ " **omnivorous dinosaur**, " +
+                        "agile and robust, with a blend of features for both hunting and foraging. " +
+                        "The dinosaur has strong legs for running and a relatively long tail for balance." +
+                        " Focus on a versatile mouth structure, showing **small and varied teeth** suitable for meat and plants. " +
+                        "The skin " + color + ", perfectly camouflaged in a swampy environment, searching for food, "+ accion + ". High-resolution, detailed scales, subtle wet reflections, one head.";
+
                 break;
             default:
                 prompt = "generic dinosaur appearance";
