@@ -50,4 +50,19 @@ public class GithubUploader {
             throw new RuntimeException("Error subiendo imagen: " + response.getStatusCode());
         }
     }
+
+    public String descargar(String ruta) {
+        String url = API_URL + ruta + "?ref=" + BRANCH;
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + githubToken);
+        headers.set("Accept", "application/vnd.github+json");
+
+        HttpEntity<Void> request = new HttpEntity<>(headers);
+
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<Map> response = restTemplate.exchange(url, HttpMethod.GET, request, Map.class);
+
+        return (String) response.getBody().get("content");
+    }
 }

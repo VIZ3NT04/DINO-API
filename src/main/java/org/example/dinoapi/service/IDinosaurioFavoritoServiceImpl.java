@@ -2,6 +2,7 @@ package org.example.dinoapi.service;
 
 import org.example.dinoapi.model.DinosaurioFavorito;
 import org.example.dinoapi.repository.IDinosaurioFavoritoRepository;
+import org.example.dinoapi.utils.GithubUploader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,9 @@ public class IDinosaurioFavoritoServiceImpl implements IDinosaurioFavoritoServic
     @Autowired
     private IDinosaurioFavoritoRepository repository;
 
+    @Autowired
+    private GithubUploader uploader;
+
     @Override
     public int contarPorEmail(String email) {
         return repository.countDinosaurioFavoritoByEmailUsuario(email);
@@ -22,7 +26,14 @@ public class IDinosaurioFavoritoServiceImpl implements IDinosaurioFavoritoServic
 
     @Override
     public List<DinosaurioFavorito> buscarPorEmail(String email) {
-        return repository.getDinosaurioFavoritosByEmailUsuario(email);
+        List<DinosaurioFavorito> lista = repository.getDinosaurioFavoritosByEmailUsuario(email);
+        for (DinosaurioFavorito dino : lista) {
+            // Coger la foto de Github y pasarla a base64
+            String base64 = uploader.descargar(dino.getFoto());
+            dino.setFoto(base64);
+        }
+
+        return lista;
     }
 
     @Override
