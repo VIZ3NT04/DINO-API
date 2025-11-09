@@ -5,6 +5,7 @@ import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
 
@@ -12,7 +13,8 @@ import java.io.IOException;
 @Service
 public class EmailService {
 
-    private static final String SENDGRID_API_KEY = "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";
+    @Value("${sendgrid_api_key}")
+    private String SENDGRID_API_KEY;
 
     public void enviarCodigoVerificacion(String to, String codigo) throws IOException {
         Email from = new Email("dinoappverify@gmail.com");
