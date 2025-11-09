@@ -13,10 +13,11 @@ import java.io.IOException;
 @Service
 public class EmailService {
 
-    @Value("${sendgrid_api_key}")
+    @Value("${sendgrid.api.key}")
     private String SENDGRID_API_KEY;
 
     public void enviarCodigoVerificacion(String to, String codigo) throws IOException {
+        System.out.println("SendGrid key: " + SENDGRID_API_KEY);
         Email from = new Email("dinoappverify@gmail.com");
         Email toEmail = new Email(to);
         String subject = "Código de verificación";
