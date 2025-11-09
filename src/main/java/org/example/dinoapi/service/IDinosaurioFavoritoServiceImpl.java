@@ -27,7 +27,7 @@ public class IDinosaurioFavoritoServiceImpl implements IDinosaurioFavoritoServic
 
     @Override
     public DinosaurioFavorito actualizarDinosaurioFavorito(DinosaurioFavorito dinoFavorito) {
-        return repository.save(dinoFavorito); // save hace UPDATE si el ID existe
+        return repository.save(dinoFavorito);
     }
 
     @Override
@@ -53,7 +53,6 @@ public class IDinosaurioFavoritoServiceImpl implements IDinosaurioFavoritoServic
         return repository.save(dinoFavorito);
     }
 
-
     @Override
     public List<DinosaurioFavorito> listarDinosaurioFavorito() {
         return repository.findAll();
@@ -63,23 +62,18 @@ public class IDinosaurioFavoritoServiceImpl implements IDinosaurioFavoritoServic
     public DinosaurioFavorito eliminarDinosaurioFavorito(Integer id) {
         Optional<DinosaurioFavorito> opt = repository.findById(id);
         if (opt.isPresent()) {
-            // Obtener la ruta del archivo desde el campo "foto"
             String rutaFoto = opt.get().getFoto();
             if (rutaFoto != null && !rutaFoto.isEmpty()) {
-                // Eliminar la imagen si existe
-                File fotoFile = new File("." + rutaFoto); // añade "." para que sea relativa a la raíz del proyecto
+
+                File fotoFile = new File("." + rutaFoto);
                 if (fotoFile.exists()) {
                     fotoFile.delete();
                 }
             }
 
-            // Eliminar de la base de datos
             repository.deleteById(id);
             return opt.get();
         }
         return null;
     }
-
-
-
 }

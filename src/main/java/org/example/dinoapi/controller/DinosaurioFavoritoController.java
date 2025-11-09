@@ -3,20 +3,14 @@ package org.example.dinoapi.controller;
 import org.example.dinoapi.model.DinosaurioFavorito;
 import org.example.dinoapi.model.dto.DinosaurioFavoritoRequestDTO;
 import org.example.dinoapi.service.IDinosaurioFavoritoService;
-import org.example.dinoapi.utils.SupabaseUploader;
+import org.example.dinoapi.utils.GithubUploader;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/dinosaurios_favoritos")
@@ -29,7 +23,7 @@ public class DinosaurioFavoritoController {
     private ModelMapper modelMapper;
 
     @Autowired
-    private SupabaseUploader uploader;
+    private GithubUploader uploader;
 
 
     @PostMapping
@@ -74,7 +68,7 @@ public class DinosaurioFavoritoController {
         dino.setTipo(tipo);
         dino.setPeriodo(periodo);
         dino.setEmailUsuario(emailUsuario);
-        dino.setFoto(""); // temporal
+        dino.setFoto("");
 
         dino = service.insertarDinosaurioFavorito(dino);
         if (dino == null) {
@@ -82,7 +76,6 @@ public class DinosaurioFavoritoController {
                     .badRequest()
                     .body("El usuario ya tiene 5 dinosaurios favoritos.");
         }
-
 
         String fileName = dino.getId() + ".png";
 

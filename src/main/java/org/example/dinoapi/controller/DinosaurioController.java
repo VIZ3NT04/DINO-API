@@ -154,5 +154,4 @@ public class DinosaurioController {
         service.deleteDinosaurio(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
 }

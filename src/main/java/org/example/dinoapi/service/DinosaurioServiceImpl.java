@@ -101,7 +101,7 @@ public class DinosaurioServiceImpl implements IDinosaurioService {
             Dinosaurio dino = new Dinosaurio();
             dino.setNombre(generarNombreInventado());
             dino.setTipo(tipo);
-            dino.setPeriodo(periodo); // Asignamos el periodo aleatorio aquí
+            dino.setPeriodo(periodo);
             dino.setLongitud(longitud);
             dino.setPeso(peso);
             dino.setDescripcion("Un dinosaurio de tipo " + tipo + " que vivió en el periodo " + periodo.getNombre() + ".");
