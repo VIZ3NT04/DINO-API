@@ -11,9 +11,9 @@ public class EmailService {
 
     public void enviarCodigoVerificacion(String to, String codigo) throws Exception {
         SendEmailRequest params = SendEmailRequest.builder()
-                .from("DinoApp <dinoappverify@gmail.com>")
+                .from("onboarding@resend.dev")
                 .to(to)
-                .subject("Código de verificación")
+                .subject("Código de verificación de la DINO-API")
                 .text("Tu código de verificación es: " + codigo)
                 .build();
 
