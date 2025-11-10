@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmailService {
 
-    private final Resend resend = new Resend(System.getenv("RESEND_API_KEY"));
+    private final Resend resend = new Resend("re_4MGGDcgj_2gbx7czHSAiErRNatctbwUNT");
 
     public void enviarCodigoVerificacion(String to, String codigo) throws Exception {
         EmailParams params = EmailParams.builder()
