@@ -48,6 +48,8 @@ public class UsuarioServiceImpl implements IUsuarioService{
             return repo.save(u);
         } catch (ObjectOptimisticLockingFailureException e) {
             throw new RuntimeException("Error de concurrencia al insertar el usuario", e);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
