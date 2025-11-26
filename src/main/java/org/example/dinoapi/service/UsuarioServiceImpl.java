@@ -25,9 +25,6 @@ public class UsuarioServiceImpl implements IUsuarioService{
     private ModelMapper mapper;
 
     @Autowired
-    private EmailService emailService;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
 
@@ -36,15 +33,9 @@ public class UsuarioServiceImpl implements IUsuarioService{
         try {
 
             Usuario u = mapper.map(usuario, Usuario.class);
-            String codigo = String.format("%06d", new Random().nextInt(999999));
-            u.setCodigoVerificacion(codigo);
-            u.setVerificado(false);
-
             String rawPassword = usuario.getPassword();
             String encryptedPassword = passwordEncoder.encode(rawPassword);
             u.setPassword(encryptedPassword);
-
-            emailService.enviarCodigoVerificacion(u.getEmail(), u.getCodigoVerificacion());
             return repo.save(u);
         } catch (ObjectOptimisticLockingFailureException e) {
             throw new RuntimeException("Error de concurrencia al insertar el usuario", e);

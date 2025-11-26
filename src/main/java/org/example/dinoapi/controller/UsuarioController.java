@@ -51,29 +51,8 @@ public class UsuarioController {
 
         System.out.println(user.getName() + " " + user.getPassword() + " " + user.getEmail());
 
-        if (!user.isVerificado()) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
-
         return new ResponseEntity<>(user, HttpStatus.OK);
 
-    }
-
-    @PostMapping("/verificar")
-    public ResponseEntity<Usuario> verificarCodigo(@RequestParam String email, @RequestParam String codigo) {
-        Usuario user = service.getUsuarioByEmail(email);
-        if (user == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        if (user.getCodigoVerificacion() != null && user.getCodigoVerificacion().equals(codigo)) {
-            user.setVerificado(true);
-            user.setCodigoVerificacion(null); // elimina el código
-            service.modificarUser(user);
-            return new ResponseEntity<>(user, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
     }
 
     @PostMapping
@@ -92,7 +71,7 @@ public class UsuarioController {
 
     @PutMapping("/{email}")
     public ResponseEntity<Usuario> modificar(@PathVariable("email") String email, @Valid @RequestBody UsuarioRequestDTO usuario) {
-        usuario.setEmail(email); // asegúrate de que el DTO tiene el email correcto
+        usuario.setEmail(email);
         Usuario user = service.modificarUser(usuario);
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
