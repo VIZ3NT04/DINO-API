@@ -3,9 +3,11 @@ package org.example.dinoapi.controller;
 import org.example.dinoapi.model.Periodo;
 import org.example.dinoapi.model.Usuario;
 import org.example.dinoapi.service.IPeriodoService;
+import org.example.dinoapi.service.IUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +18,9 @@ public class PeriodoController {
 
     @Autowired
     private IPeriodoService service;
+
+    @Autowired
+    private IUsuarioService serviceUser;
 
     @GetMapping
     public ResponseEntity<List<Periodo>> findAll() {
@@ -28,6 +33,13 @@ public class PeriodoController {
 
     @PostMapping
     public ResponseEntity<List<Periodo>> guardarPeriodos(@RequestBody List<Periodo> periodos) {
+        String loggedEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        Usuario currentUser = serviceUser.getUsuarioByEmail(loggedEmail);
+        if (!currentUser.getRole().equals(Usuario.Role.ADMIN)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
         List<Periodo> guardados = periodos.stream()
                 .map(p -> service.guardar(p))
                 .toList();

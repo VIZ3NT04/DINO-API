@@ -1,11 +1,14 @@
 package org.example.dinoapi.controller;
 
 import org.example.dinoapi.model.Pregunta;
+import org.example.dinoapi.model.Usuario;
 import org.example.dinoapi.repository.IPreguntaRepository;
 import org.example.dinoapi.service.IPreguntaService;
+import org.example.dinoapi.service.IUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 import java.util.List;
@@ -18,7 +21,7 @@ public class PreguntaController {
     private IPreguntaService service;
 
     @Autowired
-    private IPreguntaRepository repository;
+    private IUsuarioService serviceUser;
 
     @GetMapping
     public List<Pregunta> getTodas() {
@@ -32,6 +35,13 @@ public class PreguntaController {
 
     @PostMapping
     public ResponseEntity<List<Pregunta>> guardarPreguntas(@RequestBody List<Pregunta> preguntas) {
+        String loggedEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        Usuario currentUser = serviceUser.getUsuarioByEmail(loggedEmail);
+        if (!currentUser.getRole().equals(Usuario.Role.ADMIN)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
         List<Pregunta> guardadas = preguntas.stream()
                 .map(p -> service.guardar(p))
                 .toList();

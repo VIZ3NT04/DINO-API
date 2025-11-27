@@ -1,10 +1,13 @@
 package org.example.dinoapi.controller;
 
 import org.example.dinoapi.model.Dinosaurio;
+import org.example.dinoapi.model.Usuario;
 import org.example.dinoapi.service.IDinosaurioService;
+import org.example.dinoapi.service.IUsuarioService;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import java.util.Base64;
 import java.util.List;
@@ -16,6 +19,9 @@ public class DinosaurioController {
 
     @Autowired
     private IDinosaurioService service;
+
+    @Autowired
+    private IUsuarioService serviceUser;
 
     @GetMapping
     public ResponseEntity<List<Dinosaurio>> findAll() {
@@ -80,7 +86,6 @@ public class DinosaurioController {
         String entorno = entornos[rand.nextInt(entornos.length)];
 
         switch (tipo.toLowerCase()) {
-
             case "carnívoro":
                 String[] subCarn = {"raptor-like", "allosaurus-like", "spinosaurus-like", "tyrannosaurus-like", "carnotaurus-like"};
                 prompt = "A full-body, photorealistic image of a large " + subCarn[rand.nextInt(subCarn.length)] +
@@ -90,7 +95,6 @@ public class DinosaurioController {
                         "The creature is " + accion + " in " + entorno + ". " +
                         "Highly detailed, cinematic predator lighting, one head.";
                 break;
-
             case "herbívoro":
                 String[] subHerb = {"triceratops-like", "ankylosaurus-like", "brachiosaurus-like", "stegosaurus-like"};
                 prompt = "A full-body, photorealistic image of a massive " + subHerb[rand.nextInt(subHerb.length)] +
@@ -101,7 +105,6 @@ public class DinosaurioController {
                         "The dinosaur is " + accion + " in " + entorno + ", under natural sunlight. " +
                         "Extremely detailed textures and scales, one head, four legs.";
                 break;
-
             case "omnívoro":
                 String[] subOmn = {"ornithomimus-like", "iguanodon-like", "small theropod", "hypsilophodon-like"};
                 prompt = "A full-body, photorealistic image of a mid-sized " + subOmn[rand.nextInt(subOmn.length)] +
@@ -112,7 +115,6 @@ public class DinosaurioController {
                         "The dinosaur is " + accion + " in " + entorno + ". " +
                         "High-resolution, realistic lighting and detailed skin reflections.";
                 break;
-
             default:
                 prompt = "A generic full-body photorealistic dinosaur in a prehistoric environment, detailed and cinematic lighting.";
         }
@@ -143,6 +145,13 @@ public class DinosaurioController {
 
     @PostMapping
     public ResponseEntity<List<Dinosaurio>> guardarDinosaurios(@RequestBody List<Dinosaurio> dinosaurios) {
+        String loggedEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        Usuario currentUser = serviceUser.getUsuarioByEmail(loggedEmail);
+        if (!currentUser.getRole().equals(Usuario.Role.ADMIN)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
         List<Dinosaurio> guardados = dinosaurios.stream()
                 .map(d -> service.guardar(d))
                 .toList();
@@ -151,6 +160,12 @@ public class DinosaurioController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable("id") Integer id) {
+        String loggedEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        Usuario currentUser = serviceUser.getUsuarioByEmail(loggedEmail);
+        if (!currentUser.getRole().equals(Usuario.Role.ADMIN)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
         service.deleteDinosaurio(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

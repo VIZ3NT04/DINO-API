@@ -37,8 +37,6 @@ public class UsuarioController {
         if (!currentUser.getRole().equals(Usuario.Role.ADMIN)) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-
-
         return new ResponseEntity<>(service.listaUsuarios(), HttpStatus.OK);
     }
 
