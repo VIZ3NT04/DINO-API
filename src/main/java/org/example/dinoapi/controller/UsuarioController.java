@@ -31,6 +31,14 @@ public class UsuarioController {
 
     @GetMapping
     public ResponseEntity<List<Usuario>> findAll() {
+        String loggedEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        Usuario currentUser = service.getUsuarioByEmail(loggedEmail);
+        if (!currentUser.getRole().equals(Usuario.Role.ADMIN)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
+
         return new ResponseEntity<>(service.listaUsuarios(), HttpStatus.OK);
     }
 
