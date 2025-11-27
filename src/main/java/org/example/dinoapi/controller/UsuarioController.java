@@ -1,18 +1,20 @@
 package org.example.dinoapi.controller;
 
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.example.dinoapi.model.Usuario;
 import org.example.dinoapi.model.dto.UsuarioRequestDTO;
+import org.example.dinoapi.security.JwtService;
 import org.example.dinoapi.service.IDinosaurioFavoritoService;
 import org.example.dinoapi.service.IUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -23,6 +25,9 @@ public class UsuarioController {
 
     @Autowired
     private IDinosaurioFavoritoService dino_service;
+
+    @Autowired
+    private JwtService jwtService;
 
     @GetMapping
     public ResponseEntity<List<Usuario>> findAll() {
@@ -40,20 +45,21 @@ public class UsuarioController {
     }
 
     @GetMapping("/login")
-    public ResponseEntity<Usuario> login(@Valid @RequestParam("email") String email, @Valid @RequestParam("password") String password) {
-        System.out.println("Estan probant a loggearse");
-        Usuario user = service.loginUsuario(email,password);
-        System.out.println(user.getName() + " " + user.getPassword() + " " + user.getEmail());
+    public ResponseEntity<?> login(
+            @Valid @RequestParam("email") String email,
+            @Valid @RequestParam("password") String password
+    ) {
+        Usuario user = service.loginUsuario(email, password);
 
         if (user == null) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>("Credenciales incorrectas", HttpStatus.UNAUTHORIZED);
         }
 
-        System.out.println(user.getName() + " " + user.getPassword() + " " + user.getEmail());
+        String token = jwtService.generateToken(user);
 
-        return new ResponseEntity<>(user, HttpStatus.OK);
-
+        return ResponseEntity.ok(Map.of("token", token));
     }
+
 
     @PostMapping
     public ResponseEntity<Usuario> registrar(@Valid @RequestBody UsuarioRequestDTO usuario) {
@@ -71,13 +77,17 @@ public class UsuarioController {
 
     @PutMapping("/{email}")
     public ResponseEntity<Usuario> modificar(@PathVariable("email") String email, @Valid @RequestBody UsuarioRequestDTO usuario) {
+        String loggedEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        // Solo ADMIN o el propio usuario pueden modificar
+        Usuario currentUser = service.getUsuarioByEmail(loggedEmail);
+        if (!currentUser.getRole().equals(Usuario.Role.ADMIN) && !loggedEmail.equals(email)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
         usuario.setEmail(email);
         Usuario user = service.modificarUser(usuario);
-        if (user == null) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(user, HttpStatus.OK);
-        }
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
 

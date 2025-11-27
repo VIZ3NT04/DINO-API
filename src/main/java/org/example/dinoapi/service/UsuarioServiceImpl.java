@@ -36,6 +36,7 @@ public class UsuarioServiceImpl implements IUsuarioService{
             String rawPassword = usuario.getPassword();
             String encryptedPassword = passwordEncoder.encode(rawPassword);
             u.setPassword(encryptedPassword);
+            u.setRole(Usuario.Role.USER);
             return repo.save(u);
         } catch (ObjectOptimisticLockingFailureException e) {
             throw new RuntimeException("Error de concurrencia al insertar el usuario", e);
