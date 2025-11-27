@@ -36,6 +36,14 @@ public class UsuarioController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Usuario>> findById(@PathVariable("id") Integer id) {
+        String loggedEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        Usuario currentUser = service.getUsuarioByEmail(loggedEmail);
+        if (!currentUser.getRole().equals(Usuario.Role.ADMIN)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
+
         Optional<Usuario> u = Optional.ofNullable(service.getUsuarioById(id));
         if (u.isPresent()) {
             return new ResponseEntity<>(u, HttpStatus.OK);
@@ -79,7 +87,6 @@ public class UsuarioController {
     public ResponseEntity<Usuario> modificar(@PathVariable("email") String email, @Valid @RequestBody UsuarioRequestDTO usuario) {
         String loggedEmail = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        // Solo ADMIN o el propio usuario pueden modificar
         Usuario currentUser = service.getUsuarioByEmail(loggedEmail);
         if (!currentUser.getRole().equals(Usuario.Role.ADMIN) && !loggedEmail.equals(email)) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -95,6 +102,13 @@ public class UsuarioController {
     @Transactional
     @DeleteMapping("/{email}")
     public ResponseEntity<Void> eliminar(@PathVariable("email") String email){
+        String loggedEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        Usuario currentUser = service.getUsuarioByEmail(loggedEmail);
+        if (!currentUser.getRole().equals(Usuario.Role.ADMIN) && !loggedEmail.equals(email)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
         dino_service.deleteDinosauriosFavorito(email);
         service.deleteUser(email);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

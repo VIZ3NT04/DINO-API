@@ -43,5 +43,4 @@ public class PeriodoController {
         }
         return new ResponseEntity<>(periodo, HttpStatus.OK);
     }
-
 }

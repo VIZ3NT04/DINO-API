@@ -27,8 +27,18 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/usuarios/login", "/api/v1/usuarios", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers(
+                                        "/api/v1/usuarios/login",
+                                        "/api/v1/usuarios",
+                                        "/v3/api-docs/**",
+                                        "/swagger-ui/**"
+                                ).permitAll()
+                        .requestMatchers("/api/v1/periodos/**").authenticated()
+                        .requestMatchers("/api/v1/dinosaurios/**").authenticated()
+                        .requestMatchers("/api/v1/preguntas/**").authenticated()
+                        .requestMatchers("/api/v1/dinosaurios_favoritos/**").authenticated()
+                        .requestMatchers("/api/v1/usuarios/**").authenticated()
+
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
