@@ -32,7 +32,12 @@ public class SecurityConfig {
                                         "/api/v1/usuarios",
                                         "/v3/api-docs/**",
                                         "/swagger-ui/**",
-                                        "/api/v1/preguntas/health"
+                                        "/api/v1/preguntas/health",
+                                        "/api/v1/dinosaurios",
+                                        "/api/v1/dinosaurios/",
+                                        "/api/v1/dinosaurios/paginar",
+                                        "/api/v1/dinosaurios/search",
+                                        "/api/v1/dinosaurios/*"
                                 ).permitAll()
                         .requestMatchers("/api/v1/periodos/**").authenticated()
                         .requestMatchers("/api/v1/dinosaurios/**").authenticated()
