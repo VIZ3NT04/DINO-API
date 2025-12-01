@@ -31,7 +31,8 @@ public class SecurityConfig {
                                         "/api/v1/usuarios/login",
                                         "/api/v1/usuarios",
                                         "/v3/api-docs/**",
-                                        "/swagger-ui/**"
+                                        "/swagger-ui/**",
+                                        "/api/v1/preguntas/health"
                                 ).permitAll()
                         .requestMatchers("/api/v1/periodos/**").authenticated()
                         .requestMatchers("/api/v1/dinosaurios/**").authenticated()
