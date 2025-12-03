@@ -37,7 +37,8 @@ public class SecurityConfig {
                                         "/api/v1/dinosaurios/",
                                         "/api/v1/dinosaurios/paginar",
                                         "/api/v1/dinosaurios/search",
-                                        "/api/v1/dinosaurios/*"
+                                        "/api/v1/dinosaurios/*",
+                                        "/fotos_dino/**"
                                 ).permitAll()
                         .requestMatchers("/api/v1/periodos/**").authenticated()
                         .requestMatchers("/api/v1/dinosaurios/**").authenticated()
